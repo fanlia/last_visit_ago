@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "last_visit_at",
+  "version": "1.0.0",
+  "description": "show last visit time",
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["src/main.js"]
+    }
+  ]
+}
