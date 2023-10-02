@@ -30,25 +30,29 @@ const KEY = 'urls'
 const a2url = (a) => [a.hostname, a.pathname].join('/')
 
 const get = async (url) => {
-  const result = await chrome.storage.local.get(KEY)
-  const urls = result[KEY] || []
-  return urls.findLast(d => d.url === url)
+  try {
+    const result = await chrome.storage.local.get(KEY)
+    const urls = result[KEY] || []
+    return urls.findLast(d => d.url === url)
+  } catch (e) {}
 }
 
 const set = async (url) => {
-  const result = await chrome.storage.local.get(KEY)
-  let urls = result[KEY] || []
-  urls = urls.slice(-1000)
-  const index = urls.findLastIndex(d => d.url === url)
-  if (index === -1) {
-    urls.push({
-      url,
-      date: Date.now(),
-    })
-  } else {
-    url[index].date = Date.now()
-  }
-  return chrome.storage.local.set({[KEY]: urls})
+  try {
+    const result = await chrome.storage.local.get(KEY)
+    let urls = result[KEY] || []
+    urls = urls.slice(-1000)
+    const index = urls.findLastIndex(d => d.url === url)
+    if (index === -1) {
+      urls.push({
+        url,
+        date: Date.now(),
+      })
+    } else {
+      url[index].date = Date.now()
+    }
+    return chrome.storage.local.set({[KEY]: urls})
+  } catch (e) {}
 }
 
 document.addEventListener('mouseover', async function(e){
