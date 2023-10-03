@@ -41,16 +41,11 @@ const set = async (url) => {
   try {
     const result = await chrome.storage.local.get(KEY)
     let urls = result[KEY] || []
-    urls = urls.slice(-1000)
-    const index = urls.findLastIndex(d => d.url === url)
-    if (index === -1) {
-      urls.push({
-        url,
-        date: Date.now(),
-      })
-    } else {
-      url[index].date = Date.now()
-    }
+    urls = urls.slice(-1000).filter(d => d.url !== url)
+    urls.push({
+      url,
+      date: Date.now(),
+    })
     return chrome.storage.local.set({[KEY]: urls})
   } catch (e) {}
 }
