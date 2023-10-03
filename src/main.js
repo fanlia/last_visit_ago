@@ -56,23 +56,25 @@ const set = async (url) => {
 }
 
 document.addEventListener('mouseover', async function(e){
-    if(e.target.tagName=='A' && e.target.href.startsWith('http')){
-      const url = a2url(e.target)
-      const found = await get(url)
-      if (found && found.date) {
-        const value = found.date
-        if (value) {
-          const date = new Date(value)
-          const ago = format_date(date)
-          e.target.title = `last visit at: ${date.toLocaleString()}\n${ago}`
-        }
+  const el = e.target
+  if(el.tagName=='A' && el.href.startsWith('http')){
+    const url = a2url(el)
+    const found = await get(url)
+    if (found && found.date) {
+      const value = found.date
+      if (value) {
+        const date = new Date(value)
+        const ago = format_date(date)
+        el.title = `last visit at: ${date.toLocaleString()}\n${ago}`
       }
     }
+  }
 },true)
 
 document.addEventListener('click',async function(e){
-    if(e.target.tagName=='A' && e.target.href.startsWith('http')){
-      const url = a2url(e.target)
-      await set(url)
-    }
+  const el = e.target
+  if(el.tagName=='A' && el.href.startsWith('http')){
+    const url = a2url(el)
+    await set(url)
+  }
 },true)
