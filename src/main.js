@@ -37,7 +37,7 @@ const get = async (url) => {
   } catch (e) {}
 }
 
-const set = async (url) => {
+const set = async (url, text = '') => {
   try {
     const result = await chrome.storage.local.get(KEY)
     let urls = result[KEY] || []
@@ -45,6 +45,7 @@ const set = async (url) => {
     urls.push({
       url,
       date: Date.now(),
+      text,
     })
     return chrome.storage.local.set({[KEY]: urls})
   } catch (e) {}
@@ -66,10 +67,11 @@ document.addEventListener('mouseover', async function(e){
     const found = await get(url)
     if (found && found.date) {
       const value = found.date
+      const text = found.text = ''
       if (value) {
         const date = new Date(value)
         const ago = format_date(date)
-        el.title = `last visit at: ${date.toLocaleString()}\n${ago}`
+        el.title = `last visit at: ${date.toLocaleString()}\n${ago}\n${text}`
       }
     }
   }
@@ -80,6 +82,7 @@ document.addEventListener('click',async function(e){
   const a = getA(el)
   if(a && a.href.startsWith('http')){
     const url = a2url(a)
-    await set(url)
+    const text = a.textContent
+    await set(url, text)
   }
 },true)
