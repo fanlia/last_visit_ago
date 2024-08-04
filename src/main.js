@@ -67,7 +67,7 @@ document.addEventListener('mouseover', async function(e){
     const found = await get(url)
     if (found && found.date) {
       const value = found.date
-      const text = found.text = ''
+      const text = found.text || ''
       if (value) {
         const date = new Date(value)
         const ago = format_date(date)
