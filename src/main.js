@@ -50,10 +50,19 @@ const set = async (url) => {
   } catch (e) {}
 }
 
+const getA = (el) => {
+  if (el.tagName === 'A') {
+    return el
+  } else if (el.parentNode.tagName === 'A') {
+    return el.parentNode
+  }
+}
+
 document.addEventListener('mouseover', async function(e){
   const el = e.target
-  if(el.tagName=='A' && el.href.startsWith('http')){
-    const url = a2url(el)
+  const a = getA(el)
+  if(a && a.href.startsWith('http')){
+    const url = a2url(a)
     const found = await get(url)
     if (found && found.date) {
       const value = found.date
@@ -68,8 +77,9 @@ document.addEventListener('mouseover', async function(e){
 
 document.addEventListener('click',async function(e){
   const el = e.target
-  if(el.tagName=='A' && el.href.startsWith('http')){
-    const url = a2url(el)
+  const a = getA(el)
+  if(a && a.href.startsWith('http')){
+    const url = a2url(a)
     await set(url)
   }
 },true)
