@@ -41,7 +41,7 @@ const set = async (url, text = '') => {
   try {
     const result = await chrome.storage.local.get(KEY)
     let urls = result[KEY] || []
-    urls = urls.slice(-1000).filter(d => d.url !== url)
+    urls = urls.slice(-10000).filter(d => d.url !== url)
     urls.push({
       url,
       date: Date.now(),
